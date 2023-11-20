@@ -42,8 +42,8 @@
       color: white;
       border: none;
       /* padding-top: 60px; */
-      padding: 10px 10px;
-      padding-bottom: 15px;
+      padding: 10px 20px;
+      /* padding-bottom: 15px; */
       text-align: center;
       text-decoration: none;
       display: inline-block;
@@ -55,9 +55,9 @@
       z-index: 1000;
     }
 
-    /* header button h3 {
-      height: 16px;
-    } */
+    header button h3 {
+      padding-bottom: -3px;
+    }
 
     main {
       padding: 20px;
@@ -109,12 +109,12 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .choice img {
+    /* .choice img {
       max-width: 25%;
-      /* Image takes up 1/4 of the container */
+      Image takes up 1/4 of the container
       border-radius: 8px;
       margin-right: 10px;
-    }
+    } */
 
     .choice-details {
       flex: 1;
@@ -233,9 +233,9 @@
     }
 
     .search-bar {
+      /* position: fixed; */
       width: 100%;
       margin-left: 20px;
-      /* order: 2; */
       margin-bottom: 20px;
       box-sizing: border-box;
     }
@@ -258,15 +258,18 @@
     }
 
     header .show-filters .filters {
-        display: none;
-      }
+      display: none;
+    }
 
+    .mobile-menu {
+      display: none;
+    }
 
     /* Existing styles remain unchanged */
 
     @media only screen and (max-width: 600px) {
       header {
-        position: relative;
+        position: fixed;
         font-size: small;
         padding: 1em;
       }
@@ -302,21 +305,26 @@
       }
 
       .choice {
-        flex-direction: row;
+        display: flex;
+        flex-direction: column;
         align-items: center;
         text-align: center;
       }
 
-      .choice img {
+      /* img {
+        align-items: center;
 
-        max-width: 100%;
+        width: 400px;
+        height: auto;
         margin-right: 0;
         margin-bottom: 10px;
-      }
+      } */
 
       .choice-details {
         text-align: center;
         width: 100%;
+        margin-left: 0;
+        height: auto;
       }
 
       .choice h3 {
@@ -330,15 +338,16 @@
 
       .choice-container {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         margin-left: -10px;
         margin-right: 0px;
         width: 100%;
+        height: auto;
         /* Allow choices to take full width */
       }
 
       .search-choice {
-        /* order: -1; */
+        order: -1;
         width: 100%;
         float: none;
         /* Move search-choice section to the top */
@@ -352,9 +361,9 @@
         margin-top: 0px;
       }
 
-      /* .details-container {
-        align-items: flex-start;
-      } */
+      .details-content {
+        max-width: 90%;
+      }
 
       .filters {
         display: none;
@@ -362,23 +371,25 @@
         top: 60px;
         /* Adjust the top position as needed */
         left: 0;
-        width: 100%;
+        width: 70%;
         height: calc(100% - 60px);
         /* Adjust the height to leave space for the header */
+        color: #333;
         background-color: #fff;
-        z-index: 1000;
+        text-align: left;
+        z-index: 1009;
       }
 
-      .header .filters {
+      /* .header .filters {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
-        width: 100%;
+        width: 60%;
         background-color: #fff;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         z-index: 1000;
-      }
+      } */
 
       header .show-filters .filters {
         display: block;
@@ -395,6 +406,32 @@
       #addForm {
         min-width: 300px;
       }
+
+      /* Basic styling to position the button and menu */
+      .mobile-menu {
+        display: block;
+      }
+
+
+      /* Show filters when the corresponding button is clicked */
+      .show-filters .filters {
+        display: block;
+        border-radius: 0px;
+      }
+
+      header .filter-section select {
+        margin-bottom: 8px;
+        width: 100%;
+      }
+
+      .filters .close-btn {
+        position: absolute;
+        top: 8px;
+        right: 14px;
+        font-size: 20px;
+        margin-left: 50px;
+        cursor: pointer;
+      }
     }
   </style>
 </head>
@@ -403,40 +440,47 @@
 
   <header>
     <h1>Booking Page</h1>
-    <button class="mobile-menu-icon" onclick="toggleFilters()">&#9776;</button>
-    <!-- <div class="filters" id="filters1">
-      <h2>Filters</h2>
-      <div class="filter-section">
-        <label for="ratingFilter">Rating:</label>
-        <select id="ratingFilter" onchange="applyFilters()">
-          <option value="">All</option>
-          <option value="1">1+</option>
-          <option value="2">2+</option>
-          <option value="3">3+</option>
-          <option value="4">4+</option>
-          <option value="5">5</option>
-        </select>
-      </div>
-      <div class="filter-section">
-        <label for="placesFilter">Places:</label>
-        <select id="placesFilter" onchange="applyFilters()">
-          <option value="">All</option>
-          <option value="City1">City1</option>
-          <option value="City2">City2</option>
-          <option value="City3">City3</option>
-        </select>
-      </div>
-    </div> -->
+    <button class="mobile-menu-icon" onclick="toggleMenu()">&#9776;</button>
     <button class="add-choice-btn" onclick="showAddForm()">
-      Add Choices
+      <h3>+</h3>
     </button>
+    <div class="mobile-menu" id="mobileMenu">
+
+      <!-- <button class="add-choice-btn" onclick="showAddForm()">
+        <h3>+</h3>
+      </button> -->
+
+
+      <!-- Filters content -->
+      <div class="filters" id="filters1">
+        <span class="close-btn" onclick="hideMenu()">&times;</span>
+        <h2>Filters</h2>
+        <div class="filter-section">
+          <label for="ratingFilter">Rating:</label>
+          <select id="ratingFilter" onchange="applyFilters()">
+            <option value="">All</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        <div class="filter-section">
+          <label for="placesFilter">Places:</label>
+          <select id="placesFilter" onchange="applyFilters()">
+            <option value="">All</option>
+            <option value="City1">City1</option>
+            <option value="City2">City2</option>
+            <option value="City3">City3</option>
+            <!-- Add more places as needed -->
+          </select>
+        </div>
+      </div>
+    </div>
   </header>
 
   <main>
-    <!-- <div style="display: flex; flex-direction: column;">
-      <div class="search-bar">
-        <input type="text" id="search" oninput="searchChoices()" placeholder="Search titles...">
-      </div> -->
 
     <div class="filters" id="filters1">
       <h2>Filters</h2>
@@ -531,6 +575,7 @@
 
       var detailsContainer = document.getElementById('detailsContainer');
       detailsContainer.style.display = 'flex';
+      // detailsContainer.style.width = '90%'
     }
 
     function hideDetails() {
@@ -542,6 +587,11 @@
       var addFormContainer = document.getElementById('addFormContainer');
       addFormContainer.style.display = 'none';
     }
+
+    // function hideMenu() {
+    //   var mobileMenu = document.getElementById('mobileMenu');
+    //   mobileMenu.style.display = 'none';
+    // }
 
     function showAddForm() {
       var addFormContainer = document.getElementById('addFormContainer');
@@ -579,13 +629,18 @@
       var choiceImage = document.createElement('img');
       choiceImage.src = imagePath;
       choiceImage.alt = title;
-      choiceImage.style.maxWidth = '25%';
+      choiceImage.style.maxWidth = '100%';
       choiceImage.style.borderRadius = '8px';
       choiceImage.style.marginRight = '10px';
+      // choiceImage.style.marginLeft = '10px'
+      choiceImage.style.paddingTop = '4px'
+      // choiceImage.style.alignItems = 'center';
 
       var choiceDetails = document.createElement('div');
       choiceDetails.className = 'choice-details';
       choiceDetails.style.flex = '1';
+      choiceDetails.style.marginTop = '5px'
+      // choiceDetails.style.alignItems = 'left'
 
       var choiceHeader = document.createElement('h3');
       choiceHeader.innerText = title;
@@ -688,16 +743,17 @@
     }
 
     // Responsive behavior for mobile devices
-    function toggleFilters() {
-      var header = document.querySelector('header');
-      header.classList.toggle('show-filters');
+    function toggleMenu() {
+      var mobileMenu = document.querySelector('.mobile-menu');
+      mobileMenu.classList.toggle('show-filters');
     }
 
-    var mobileMenuIcon = document.querySelector('.mobile-menu-icon');
-    mobileMenuIcon.addEventListener('click', toggleFilters);
+    function hideMenu() {
+      var mobileMenu = document.querySelector('.mobile-menu');
+      mobileMenu.classList.remove('show-filters');
+    }
 
-
-
+// Other existing JavaScript functions...
   </script>
 </body>
 
